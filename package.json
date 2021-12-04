@@ -1,0 +1,41 @@
+{
+  "name": "@yigityesilpinar/perfanalyticsjs",
+  "version": "1.0.0",
+  "private": true,
+  "description": "a client-side library, which collects some performance related key metrics from browser and sends to the PerfAnalyticsAPI",
+  "license": "ISC",
+  "author": "yigityesilpinar@gmail.com",
+  "main": "dist/PerfAnalytics.js",
+  "scripts": {
+    "build": "rm -rf dist && cross-env NODE_ENV=production TS_NODE_PROJECT=\"webpack.tsconfig.json\" webpack",
+    "dev": "cross-env NODE_ENV=development TS_NODE_PROJECT=\"webpack.tsconfig.json\" webpack serve",
+    "lint": "eslint --ext .tsx,.ts,.js,.jsx .",
+    "sort": "npx sort-package-json",
+    "type:check": "tsc --noEmit"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@types/brotli-webpack-plugin": "1.1.2",
+    "@types/compression-webpack-plugin": "9.0.0",
+    "@typescript-eslint/eslint-plugin": "5.5.0",
+    "@typescript-eslint/parser": "5.5.0",
+    "brotli-webpack-plugin": "1.1.0",
+    "browserslist": "4.18.1",
+    "compression-webpack-plugin": "9.0.1",
+    "cross-env": "7.0.3",
+    "eslint": "8.4.0",
+    "eslint-plugin-compat": "4.0.0",
+    "eslint-plugin-typescript": "0.14.0",
+    "ts-loader": "9.2.6",
+    "ts-node": "10.4.0",
+    "typescript": "4.5.2",
+    "web-vitals": "2.1.2",
+    "webpack": "5.64.4",
+    "webpack-cli": "4.9.1",
+    "webpack-dev-server": "4.6.0"
+  },
+  "engines": {
+    "node": "~v14.16.1",
+    "npm": "6.14.12"
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "eslint.alwaysShowStatus": true,
+  "eslint.options": { "overrideConfigFile": ".eslintrc.js" },
+  "eslint.enable": true,
+  "eslint.nodePath": "./node_modules/eslint",
+  "eslint.validate": ["javascript", "javascriptreact", "html", "typescriptreact"],
+  "editor.renderWhitespace": "boundary"
+}
