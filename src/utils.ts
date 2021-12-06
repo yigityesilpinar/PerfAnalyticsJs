@@ -1,7 +1,7 @@
 import { getFCP } from 'web-vitals'
 
-import { perfAnalyticsAPI } from './config'
-import { PerformanceMetricsData } from './types'
+import { perfAnalyticsAPIHost } from './config'
+import { PerformanceMetricsData, ResourceMetricsData } from './types'
 // https://web.dev/fcp/#differences-between-the-metric-and-the-api
 
 export const waitForLoad = () =>
@@ -20,14 +20,64 @@ export const waitForLoad = () =>
     }
   })
 
-export const sendToAnalytics = (performanceMetricsData: PerformanceMetricsData) => {
-  const body = JSON.stringify(performanceMetricsData)
+interface SendAnalyticEntriesOptions {
+  performanceMetricsData: PerformanceMetricsData
+  analyticsId: number
+}
+export const sendAnalyticEntries = ({ performanceMetricsData, analyticsId }: SendAnalyticEntriesOptions) =>
+  sendAnalytics({
+    endpoint: `${perfAnalyticsAPIHost}/account/${analyticsId}/analytics`,
+    body: JSON.stringify(performanceMetricsData)
+  })
+
+// collect resourceMetricsDatas before send
+let waitingResourceMetricsDatas: ResourceMetricsData[] = []
+let sendResourceAnalyticEntriesTimeout = -1
+interface SendResourceAnalyticEntriesOptions {
+  resourceMetricsDatas: ResourceMetricsData[]
+  analyticsId: number
+}
+export const sendResourceAnalyticEntries = ({
+  resourceMetricsDatas,
+  analyticsId
+}: SendResourceAnalyticEntriesOptions) => {
+  window.clearTimeout(sendResourceAnalyticEntriesTimeout)
+  waitingResourceMetricsDatas = waitingResourceMetricsDatas.concat(resourceMetricsDatas)
+  sendResourceAnalyticEntriesTimeout = window.setTimeout(() => {
+    sendAnalytics({
+      endpoint: `${perfAnalyticsAPIHost}/account/${analyticsId}/resourceAnalytics`,
+      body: JSON.stringify(waitingResourceMetricsDatas)
+    })
+    waitingResourceMetricsDatas = []
+  }, 1000)
+}
+
+interface SendAnalytiOptions {
+  endpoint: string
+  body: string
+}
+
+export const sendAnalytics = ({ endpoint, body }: SendAnalytiOptions): Promise<Response | boolean> => {
   if ('sendBeacon' in window.navigator) {
-    navigator.sendBeacon(perfAnalyticsAPI, body)
+    const blob = new Blob([body], { type: 'application/json; charset=UTF-8' }) // the blob
+    const result = navigator.sendBeacon(endpoint, blob)
+    return result ? Promise.resolve(result) : Promise.reject(result)
   } else {
-    fetch(perfAnalyticsAPI, { body, method: 'POST', keepalive: true })
+    return fetch(endpoint, {
+      keepalive: true,
+      method: 'POST',
+      mode: 'cors',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body
+    })
   }
 }
+
+export const fetchAnalyticsId = (perfAnalyticsId: string) =>
+  fetch(`${perfAnalyticsAPIHost}/account/${perfAnalyticsId}`).then((it) => it.json())
 
 export const getFCPPromise: () => Promise<Pick<PerformanceMetricsData, 'fcp'>> = () =>
   new Promise((resolve, reject) => {

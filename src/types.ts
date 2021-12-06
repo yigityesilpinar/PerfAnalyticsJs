@@ -3,7 +3,12 @@ export interface PerfAnalyticsInitOptions {
   debug?: boolean
 }
 
-export interface PerformanceMetricsData {
+export interface CommonMetricsData {
+  analyzeSessionUUID: string
+  analyzeStartAt: string
+}
+
+export interface PerformanceMetricsData extends CommonMetricsData {
   ttfb: number
   fcp: number
   requestTime: number
@@ -19,7 +24,9 @@ export interface PerformanceMetricsData {
   domContentLoad: number
 }
 
-export interface ResourceMetricsData extends Pick<PerformanceResourceTiming, 'initiatorType' | 'name'> {
+export interface ResourceMetricsData
+  extends CommonMetricsData,
+    Pick<PerformanceResourceTiming, 'initiatorType' | 'name'> {
   requestTime: number
   responseTime: number
   fetchTime: number
