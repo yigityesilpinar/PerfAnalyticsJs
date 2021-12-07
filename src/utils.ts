@@ -1,5 +1,3 @@
-import { getFCP } from 'web-vitals'
-
 import { perfAnalyticsAPIHost } from './config'
 import { PerformanceMetricsData, ResourceMetricsData } from './types'
 // https://web.dev/fcp/#differences-between-the-metric-and-the-api
@@ -81,9 +79,12 @@ export const fetchAnalyticsId = (perfAnalyticsId: string) =>
 
 export const getFCPPromise: () => Promise<Pick<PerformanceMetricsData, 'fcp'>> = () =>
   new Promise((resolve, reject) => {
-    const timeout = window.setTimeout(() => reject('timeout'), 5000)
-    getFCP((metric) => {
-      resolve({ fcp: metric.value })
-      window.clearTimeout(timeout)
-    })
+    const timeout = window.setTimeout(() => reject('timeout'), 3000)
+    new PerformanceObserver((entryList) => {
+      const fcpEntry = entryList.getEntriesByName('first-contentful-paint')[0]
+      if (fcpEntry) {
+        resolve({ fcp: fcpEntry.startTime })
+        window.clearTimeout(timeout)
+      }
+    }).observe({ type: 'paint', buffered: true })
   })

@@ -11,7 +11,9 @@ const config: Configuration = {
     path: path.resolve(__dirname, 'dist'),
     filename: 'PerfAnalytics.js',
     library: 'PerfAnalyticsJS',
-    libraryTarget: 'umd'
+    libraryExport: 'default',
+    libraryTarget: 'umd',
+    umdNamedDefine: true
   },
   mode: isDevelopment ? 'development' : 'production',
   ...(isDevelopment
