@@ -22,6 +22,7 @@ export interface PerformanceMetricsData extends CommonMetricsData {
   domInteractive: number
   domComplete: number
   domContentLoad: number
+  windowLoad: number
 }
 
 export interface ResourceMetricsData

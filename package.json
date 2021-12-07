@@ -1,5 +1,5 @@
 {
-  "name": "@yigityesilpinar/perfanalyticsjs",
+  "name": "@yigitysl/perfanalyticsjs",
   "version": "1.0.0",
   "private": true,
   "description": "a client-side library, which collects some performance related key metrics from browser and sends to the PerfAnalyticsAPI",

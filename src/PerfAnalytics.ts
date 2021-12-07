@@ -57,7 +57,8 @@ class PerfAnalytics {
         unloadTime: navigationEntry.unloadEventEnd - navigationEntry.unloadEventStart,
         domInteractive: navigationEntry.domInteractive,
         domComplete: navigationEntry.domComplete,
-        domContentLoad: navigationEntry.domContentLoadedEventEnd - navigationEntry.domContentLoadedEventStart
+        domContentLoad: navigationEntry.domContentLoadedEventEnd - navigationEntry.domContentLoadedEventStart,
+        windowLoad: navigationEntry.loadEventEnd - navigationEntry.loadEventStart
       }
       if (this.perfAnalyticsInitOptions.debug) {
         // eslint-disable-next-line no-console
