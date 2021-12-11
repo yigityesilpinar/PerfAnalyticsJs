@@ -1,5 +1,5 @@
 import { perfAnalyticsAPIHost } from './config'
-import { PerformanceMetricsData, ResourceMetricsData } from './types'
+import { AnalyticsCreatePayload, ResourceAnalyticsCreatePayload } from './api/generated/perfAnalytics'
 // https://web.dev/fcp/#differences-between-the-metric-and-the-api
 
 export const waitForLoad = () =>
@@ -19,7 +19,7 @@ export const waitForLoad = () =>
   })
 
 interface SendAnalyticEntriesOptions {
-  performanceMetricsData: PerformanceMetricsData
+  performanceMetricsData: AnalyticsCreatePayload
   analyticsId: number
 }
 export const sendAnalyticEntries = ({ performanceMetricsData, analyticsId }: SendAnalyticEntriesOptions) =>
@@ -29,10 +29,10 @@ export const sendAnalyticEntries = ({ performanceMetricsData, analyticsId }: Sen
   })
 
 // collect resourceMetricsDatas before send
-let waitingResourceMetricsDatas: ResourceMetricsData[] = []
+let waitingResourceMetricsDatas: ResourceAnalyticsCreatePayload[] = []
 let sendResourceAnalyticEntriesTimeout = -1
 interface SendResourceAnalyticEntriesOptions {
-  resourceMetricsDatas: ResourceMetricsData[]
+  resourceMetricsDatas: ResourceAnalyticsCreatePayload
   analyticsId: number
 }
 export const sendResourceAnalyticEntries = ({
@@ -77,7 +77,7 @@ export const sendAnalytics = ({ endpoint, body }: SendAnalytiOptions): Promise<R
 export const fetchAnalyticsId = (perfAnalyticsId: string) =>
   fetch(`${perfAnalyticsAPIHost}/account/${perfAnalyticsId}`).then((it) => it.json())
 
-export const getFCPPromise: () => Promise<Pick<PerformanceMetricsData, 'fcp'>> = () =>
+export const getFCPPromise: () => Promise<Pick<AnalyticsCreatePayload, 'fcp'>> = () =>
   new Promise((resolve, reject) => {
     const timeout = window.setTimeout(() => reject('timeout'), 3000)
     new PerformanceObserver((entryList) => {

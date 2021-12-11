@@ -1,6 +1,7 @@
+import { AnalyticsCreatePayload, ResourceAnalyticsCreatePayload } from './api/generated/perfAnalytics'
 import { analyzeSessionUUID, analyzeStartAt, perfAnalyticsAPIHost } from './config'
 import { waitForLoad, getFCPPromise, sendAnalyticEntries, fetchAnalyticsId, sendResourceAnalyticEntries } from './utils'
-import { PerformanceMetricsData, PerfAnalyticsInitOptions, ResourceMetricsData } from './types'
+import { PerfAnalyticsInitOptions } from './types'
 
 class PerfAnalytics {
   private perfAnalyticsId: string
@@ -42,7 +43,7 @@ class PerfAnalytics {
       const fcpMetric = await getFCPPromise()
       const navigationEntry = window.performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming
 
-      const performanceMetricsData: PerformanceMetricsData = {
+      const performanceMetricsData: AnalyticsCreatePayload = {
         analyzeSessionUUID,
         analyzeStartAt,
         fcp: fcpMetric.fcp,
@@ -85,7 +86,7 @@ class PerfAnalytics {
               responseTime: typedEntry.responseEnd - typedEntry.responseStart,
               fetchTime: typedEntry.responseEnd - typedEntry.fetchStart,
               redirectTime: typedEntry.redirectEnd - typedEntry.redirectEnd
-            } as ResourceMetricsData
+            } as ResourceAnalyticsCreatePayload[number]
           })
         if (resourceMetricsDatas.length) {
           if (this.perfAnalyticsInitOptions.debug) {
