@@ -31,3 +31,27 @@ const perfAnalytics = new PerfAnalytics({
   // debug: true
 })
 ```
+
+or
+
+
+```
+<script async src="https://yy-perf-analytics-dashboard.herokuapp.com/PerfAnalytics.js"/>
+
+window.PerfAnalyticsJS({
+   perfAnalyticsId: 'xxxxxxxxxxxx',
+ //  debug: true
+})
+```
+
+# Summary
+
+- 2.7K Gzipped PerfAnalytics.js.gz
+- Developed with typescript, exports its type definitions
+- CI & CD with github workflows 
+- Npm library published https://www.npmjs.com/package/@yigitysl/perfanalyticsjs
+- using eslint with eslint-compat-plugin and browserslist to avoid browser support issues
+- Generates API types with swagger script from API docs 
+- Send data using sendBeacon when possible, see https://developer.mozilla.org/en-US/docs/Web/API/Navigator/sendBeacon
+  
+

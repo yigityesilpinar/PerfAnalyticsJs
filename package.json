@@ -1,6 +1,6 @@
 {
   "name": "@yigitysl/perfanalyticsjs",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "a client-side library, which collects some performance related key metrics from browser and sends to the PerfAnalyticsAPI",
   "license": "ISC",
   "author": "yigityesilpinar@gmail.com",
